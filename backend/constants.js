@@ -24,6 +24,7 @@ export const ERROR_MESSAGES = {
   INVALID_TOKEN: "Invalid token",
   USER_NOT_FOUND:'User Not Found',
   CURRENT_USER_ERROR:'CURRENT USER ERROR',
+  PROFILE_ERROR:'Profile Error',
 };
 
 export const DB = {

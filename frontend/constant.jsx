@@ -7,7 +7,8 @@ export const LOGIN={
     'LOGIN':"Login",
     'ERROR':'🎉🎉🎉Login error hai bhaiii...',
 }
-export const LOADING="Loading...🐢🐢🐢"
+export const LOADING="Loading...🐇🐇🐇"
+export const SAVING="Saving...🐇🐇🐇"
 
 export const INPUT = {
     'USERNAME':'Username',

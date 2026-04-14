@@ -25,7 +25,8 @@ function Login() {
     try {
       let result = await axios.post(`${SERVERURL}/api/auth/login`, { email, password }, { withCredentials: true })
       dispatch(setUserData(result.data))
-      
+      setEmail("")
+      setPassword("")
       setLoading(false)
       setError("")
 

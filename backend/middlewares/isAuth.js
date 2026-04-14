@@ -10,8 +10,7 @@ const isAuth=async (req, res, next) =>{
         }
 
         const verifyToken = jwt.verify(token, JWT_SECRET);
-
-        console.log(verifyToken)
+        
 
         req.userId = verifyToken.userId;
         next()
