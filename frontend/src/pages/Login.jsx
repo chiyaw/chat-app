@@ -8,7 +8,7 @@ import { setUserData } from '../redux/userSlice'
 
 
 function Login() {
-  let navigate = useNavigate()
+  
   let [show, setShow] = useState(false)
   let [email, setEmail] = useState("")
   let [password, setPassword] = useState("")
@@ -16,6 +16,7 @@ function Login() {
   let [error,setError]=useState(false)
 
   let dispatch = useDispatch()
+  let navigate = useNavigate()
   let {userData} = useSelector(state=>state.user)
 
   const handleLogin = async (e) => {
@@ -25,6 +26,7 @@ function Login() {
     try {
       let result = await axios.post(`${SERVERURL}/api/auth/login`, { email, password }, { withCredentials: true })
       dispatch(setUserData(result.data))
+      navigate('/')
       setEmail("")
       setPassword("")
       setLoading(false)

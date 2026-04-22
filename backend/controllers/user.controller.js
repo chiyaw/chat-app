@@ -29,12 +29,23 @@ export const editProfile=async (req,res)=>{
         },{ returnDocument: 'after' })
 
         if(!user){
-            return res.status(400).json({message:"user not found"})
+            return res.status(HTTP_STATUS.BAD_REQUEST).json({message:"user not found"})
         }
 
-        return res.status(200).json(user)
+        return res.status(HTTP_STATUS.OK).json(user)
     } catch (error) {
-        return res.status(500).json({message:`profile error ${error}`})
+        return res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({message:`editProfile error ${error}`})
     }
 }
 
+export const getOtherUsers = async (req,res) => {
+    try {
+        let users=await User.find({
+            _id:{$ne:req.userId}
+        }).select("-password")
+        return res.status(HTTP_STATUS.OK).json(users)
+        
+    } catch (error) {
+        return res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({message:`getOtherUsers error ${error}`})
+    }
+}

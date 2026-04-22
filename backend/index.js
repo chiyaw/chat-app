@@ -4,6 +4,7 @@ import { SERVER_START_MESSAGE } from "./constants.js";
 import connectDb from "./config/db.js";
 import cookieParser from "cookie-parser";
 import cors from "cors";
+import messageRouter from "./routes/message.route.js";
 
 const port = process.env.PORT || 5000;
 const app = express();
@@ -20,7 +21,6 @@ app.use(cookieParser());
 
 const start = async () => {
   try {
-    // ✅ 1. connect DB FIRST
     await connectDb();
 
 
@@ -29,6 +29,7 @@ const start = async () => {
 
     app.use("/api/auth", authRouter);
     app.use("/api/user", userRouter);
+    app.use("/api/message", messageRouter);
 
   
     app.listen(port, (err) => {

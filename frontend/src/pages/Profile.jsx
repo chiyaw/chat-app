@@ -40,6 +40,7 @@ function Profile() {
             setSaving(false)
             console.log(result.data)
             dispatch(setUserData(result.data))
+            navigate("/")
             
         } catch (error) {
             console.log(error.response?.data || error.message)
