@@ -60,7 +60,7 @@ function Profile() {
             <div onClick={()=>image.current.click()} className= 'bg-white rounded-full border-5 border-[#869c96] shadow-gray-500  shadow-2xl relative '>
 
                 <div className=' w-50 h-50 rounded-full overflow-hidden flex justify-center items-center'>
-                    <img src={frontendImage} className='h-full' />
+                    <img src={frontendImage} className='w-full h-full object-cover' />
                 </div>
                 
                 <IoCameraOutline className='absolute bottom-0 right-7 w-10 h-10 text-gray-800 bg-[#869c96] rounded-full p-1 shadow-gray-500 shadow-lg' />

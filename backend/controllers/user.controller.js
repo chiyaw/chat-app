@@ -49,3 +49,22 @@ export const getOtherUsers = async (req,res) => {
         return res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({message:`getOtherUsers error ${error}`})
     }
 }
+
+export const search = aasync(req,res) => {
+    try {
+
+        let {query} = req.query
+        if(!query){
+            return res.status(HTTP_STATUS.NOT_FOUND).json({message:`query is required`})
+        }
+        let users=await User.find({
+            $or:[
+                {name:{$regex:}}
+            ]
+        })
+
+        
+    } catch (error) {
+        return res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({message:`search backend error ${error}`})
+    }
+}

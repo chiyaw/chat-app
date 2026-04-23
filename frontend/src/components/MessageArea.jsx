@@ -92,13 +92,13 @@ function MessageArea() {
                             <IoIosArrowBack className=' h-8 w-8 text-white' />
                         </div>
                         <div className=' w-12.5 h-12.5  rounded-full overflow-hidden flex justify-center items-center shadow-gray-700 shadow-lg'>
-                            <img src={selectedUser?.image || dp} className='h-full' />
+                            <img src={selectedUser?.image || dp} className='w-full h-full object-cover' />
 
                         </div>
                         <h1 className='text-white font-semibold text-[20px]'>{selectedUser?.userName || ' User'}</h1>
                     </div>
-                    <div className='w-full flex-1 flex flex-col overflow-y-auto gap-2 px-2 outline-none'>
-                        {showPicker && <div className='absolute bottom-28 left-5 shadow-gray-500 shadow-2xl z-[100]'><EmojiPicker onEmojiClick={onEmojiClick} width={250} height={350} /> </div>}
+                    <div className='w-full flex-1 flex flex-col overflow-y-auto gap-2 px-2 my-1 outline-none'>
+                        {showPicker && <div className='absolute bottom-28 left-5 shadow-gray-500 shadow-2xl z-100'><EmojiPicker onEmojiClick={onEmojiClick} width={250} height={350} /> </div>}
 
 
                         {messages?.map((mess) => (
