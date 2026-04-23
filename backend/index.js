@@ -5,9 +5,10 @@ import connectDb from "./config/db.js";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import messageRouter from "./routes/message.route.js";
+import { app, server } from "./socket/socket.js";
 
-const port = process.env.PORT || 5000;
-const app = express();
+const port = process.env.PORT;
+
 
 app.use(
   cors({
@@ -32,7 +33,7 @@ const start = async () => {
     app.use("/api/message", messageRouter);
 
   
-    app.listen(port, (err) => {
+    server.listen(port, (err) => {
       if (err) {
         console.log("server not started", err )
 

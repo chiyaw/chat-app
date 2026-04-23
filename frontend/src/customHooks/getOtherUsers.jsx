@@ -11,7 +11,7 @@ const getOtherUsers = () => {
 
 
     useEffect(()=>{
-    if (userData) return;
+    if (!userData) return;
 
     const fetchUser = async () => {
         try {
@@ -22,7 +22,7 @@ const getOtherUsers = () => {
         }
     }
     fetchUser()
-}, [userData])
+}, [userData, dispatch])
 }
 
 export default getOtherUsers

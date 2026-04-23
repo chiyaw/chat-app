@@ -11,20 +11,19 @@ const getMessage = () => {
 
 
     useEffect(()=>{
-    if (userData) return;
+    if (!userData || !selectedUser?._id) return;
 
     const fetchMessages = async () => {
-        if (selectedUser?._id) {
         try {
             let result = await axios.get(`${SERVERURL}/api/message/get/${selectedUser._id}`, {withCredentials:true})
-            dispatch(setMessages(result.data.messages))
+            dispatch(setMessages(result.data || []))
         } catch (error) {
             console.log(error)
+            dispatch(setMessages([]))
         }
     }
-    }
     fetchMessages()
-}, [selectedUser, dispatch])
+}, [selectedUser, userData, dispatch])
 }
 
 

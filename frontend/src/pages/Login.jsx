@@ -4,7 +4,7 @@ import { useState } from 'react'
 import axios from 'axios'
 import { SERVERURL, LOGIN, LOADING, INPUT, SIGNUP } from '../../constant'
 import { useDispatch, useSelector } from 'react-redux'
-import { setUserData } from '../redux/userSlice'
+import { setSelectedUser, setUserData } from '../redux/userSlice'
 
 
 function Login() {
@@ -26,6 +26,7 @@ function Login() {
     try {
       let result = await axios.post(`${SERVERURL}/api/auth/login`, { email, password }, { withCredentials: true })
       dispatch(setUserData(result.data))
+      dispatch(setSelectedUser(null))
       navigate('/')
       setEmail("")
       setPassword("")

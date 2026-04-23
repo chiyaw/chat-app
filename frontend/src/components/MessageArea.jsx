@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import dp from '../assets/dp.webp'
 import { IoIosArrowBack } from "react-icons/io";
 import { useDispatch, useSelector } from 'react-redux';
@@ -11,32 +11,33 @@ import SenderMessage from './SenderMessage.jsx';
 import ReceiverMessage from './ReceiverMessage.jsx';
 import { SERVERURL } from '../../constant.jsx';
 import axios from 'axios';
-import { setMessages } from '../redux/messageSlice.js';
+import { addMessage, setMessages } from '../redux/messageSlice.js';
+import { useEffect } from 'react';
 
 function MessageArea() {
 
-    let { selectedUser, userData } = useSelector(state => state.user)
+    let { selectedUser, userData, socket } = useSelector(state => state.user)
     let dispatch = useDispatch()
     let [showPicker, setShowPicker] = useState(false)
     let [input, setInput] = useState("")
     let [frontendImage, setFrontendImage] = useState(null)
     let [backendImage, setBackendImage] = useState(null)
     let image = useRef()
-    let {messages} = useSelector(state=>state.message)
+    let { messages } = useSelector(state => state.message)
     let [loading, setLoading] = useState(false)
 
     const handleSendMessage = async (e) => {
         e.preventDefault()
         setLoading(true)
         try {
-    let formData=new FormData()
-    formData.append("message",input)
-    if(backendImage){
-      formData.append("image",backendImage)
-    }
-    let result=await axios.post(`${SERVERURL}/api/message/send/${selectedUser._id}`,formData,{withCredentials:true})
-    setLoading(false)
-            dispatch(setMessages([...messages, result.data.message]))
+            let formData = new FormData()
+            formData.append("message", input)
+            if (backendImage) {
+                formData.append("image", backendImage)
+            }
+            let result = await axios.post(`${SERVERURL}/api/message/send/${selectedUser._id}`, formData, { withCredentials: true })
+            setLoading(false)
+            dispatch(setMessages([...messages, result.data]))
             setInput("")
             setFrontendImage(null)
             setBackendImage(null)
@@ -59,11 +60,27 @@ function MessageArea() {
     }
 
 
+    useEffect(() => {
+        if (!socket || !selectedUser?._id) return
+
+        const handleNewMessage = (mess) => {
+            const isCurrentChat =
+                mess?.sender === selectedUser._id || mess?.receiver === selectedUser._id
+
+            if (isCurrentChat) {
+                dispatch(addMessage(mess))
+            }
+        }
+
+        socket.on("newMessage", handleNewMessage)
+        return () => socket.off("newMessage", handleNewMessage)
+    }, [socket, selectedUser, dispatch])
+
 
 
     return (
 
-        <div className={`${selectedUser ? 'flex' : 'hidden'} relative lg:flex lg:w-[70%] w-full h-screen bg-[#d5f4ec] overflow-hidden  `}  >
+        <div className={`${selectedUser ? 'flex' : 'hidden'} relative lg:block lg:w-[70%] w-full h-screen bg-[#d5f4ec] overflow-hidden  `}  >
 
             {selectedUser &&
                 <div className='w-full h-screen flex flex-col overflow-hidden gap-5 items-center'>
@@ -81,11 +98,11 @@ function MessageArea() {
                         {showPicker && <div className='absolute bottom-28 left-5 shadow-gray-500 shadow-2xl'><EmojiPicker onEmojiClick={onEmojiClick} width={250} height={350} /> </div>}
 
 
-                        {messages?.map((mess)=>(
-    mess.sender === userData._id
-      ? <SenderMessage image={mess.image} message={mess.message}/>
-      : <ReceiverMessage  image={mess.image} message={mess.message} />
-))}
+                        {messages?.map((mess) => (
+                            mess.sender === userData._id
+                                ? <SenderMessage key={mess._id} image={mess.image} message={mess.message} />
+                                : <ReceiverMessage key={mess._id} image={mess.image} message={mess.message} />
+                        ))}
 
                     </div>
                 </div>

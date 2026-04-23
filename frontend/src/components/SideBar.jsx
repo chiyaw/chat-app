@@ -21,7 +21,8 @@ function SideBar() {
         try {
             let result = await axios.get(`${SERVERURL}/api/auth/logout`, { withCredentials: true })
             dispatch(setUserData(null))
-            dispatch(setOtherUsers(null))
+            let userRes = await axios.get(`${SERVERURL}/api/user/others`, {withCredentials:true})
+            dispatch(setOtherUsers(userRes.data))
             navigate("/login")
 
         } catch (error) {
