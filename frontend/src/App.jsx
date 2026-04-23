@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { Routes, Route, Navigate } from 'react-router-dom'
 import Login from './pages/Login'
 import SignUp from './pages/SignUp'
@@ -9,20 +9,24 @@ import Profile from './pages/Profile'
 import getOtherUsers from './customHooks/getOtherUsers'
 import { io } from 'socket.io-client'
 import { SERVERURL } from '../constant'
-import { setOnlineUsers, setSocket } from './redux/userSlice'
+import { setOnlineUsers } from './redux/userSlice'
+import { useSocket } from './context/SocketContext'
 
 function App() {
   getCurrentUser()
   getOtherUsers()
-  let {userData ,socket, onlineUsers} = useSelector(state=>state.user)
+  let {userData} = useSelector(state=>state.user)
   let dispatch = useDispatch()
+  const { setSocket } = useSocket()
+  const socketRef = useRef(null)
 
   useEffect(() => {
     if (!userData?._id) {
-      if (socket) {
-        socket.close()
-        dispatch(setSocket(null))
+      if (socketRef.current) {
+        socketRef.current.close()
+        socketRef.current = null
       }
+      setSocket(null)
       dispatch(setOnlineUsers([]))
       return
     }
@@ -33,7 +37,8 @@ function App() {
       },
     })
 
-    dispatch(setSocket(socketio))
+    socketRef.current = socketio
+    setSocket(socketio)
     socketio.on("getOnlineUsers", (users) => {
       dispatch(setOnlineUsers(users))
     })
@@ -41,9 +46,10 @@ function App() {
     return () => {
       socketio.off("getOnlineUsers")
       socketio.close()
-      dispatch(setSocket(null))
+      socketRef.current = null
+      setSocket(null)
     }
-  }, [userData, dispatch])
+  }, [userData?._id, dispatch, setSocket])
   return (
     <Routes>
       <Route path='/login' element={!userData?<Login/>:<Navigate to = '/'/>}/>

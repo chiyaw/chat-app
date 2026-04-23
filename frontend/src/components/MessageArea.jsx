@@ -13,11 +13,13 @@ import { SERVERURL } from '../../constant.jsx';
 import axios from 'axios';
 import { addMessage, setMessages } from '../redux/messageSlice.js';
 import { useEffect } from 'react';
+import { useSocket } from '../context/SocketContext.jsx';
 
 function MessageArea() {
 
-    let { selectedUser, userData, socket } = useSelector(state => state.user)
+    let { selectedUser, userData } = useSelector(state => state.user)
     let dispatch = useDispatch()
+    const { socket } = useSocket()
     let [showPicker, setShowPicker] = useState(false)
     let [input, setInput] = useState("")
     let [frontendImage, setFrontendImage] = useState(null)

@@ -1,4 +1,4 @@
-export const SERVERURL= 'http://localhost:8000'
+export const SERVERURL=import.meta.env.VITE_SERVER_URL || "http://localhost:8000"
 export const SIGNUP={
     'SIGNUP':"SignUp",
     'ERROR':'🎊🎊🎊 SignUp error hai bhaiii...',
