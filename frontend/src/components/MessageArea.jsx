@@ -28,6 +28,9 @@ function MessageArea() {
 
     const handleSendMessage = async (e) => {
         e.preventDefault()
+        if (input.length==0 && backendImage==null){
+            return 
+        }
         setLoading(true)
         try {
             let formData = new FormData()
@@ -83,7 +86,7 @@ function MessageArea() {
         <div className={`${selectedUser ? 'flex' : 'hidden'} relative lg:block lg:w-[70%] w-full h-screen bg-[#d5f4ec] overflow-hidden  `}  >
 
             {selectedUser &&
-                <div className='w-full h-screen flex flex-col overflow-hidden gap-5 items-center'>
+                <div className='w-full h-full flex flex-col overflow-hidden'>
                     <div className='w-full h-25 bg-[#408a78] rounded-b-[30px] shadow-gray-400 shadow-2xl  justify-start items-center px-5 flex flex-row gap-5'>
                         <div onClick={() => dispatch(setSelectedUser(null))} className='cursor-pointer'>
                             <IoIosArrowBack className=' h-8 w-8 text-white' />
@@ -94,8 +97,8 @@ function MessageArea() {
                         </div>
                         <h1 className='text-white font-semibold text-[20px]'>{selectedUser?.userName || ' User'}</h1>
                     </div>
-                    <div className='w-full h-160 flex flex-col  py-7.5 overflow-auto gap-5  '>
-                        {showPicker && <div className='absolute bottom-28 left-5 shadow-gray-500 shadow-2xl'><EmojiPicker onEmojiClick={onEmojiClick} width={250} height={350} /> </div>}
+                    <div className='w-full flex-1 flex flex-col overflow-y-auto gap-2 px-2 outline-none'>
+                        {showPicker && <div className='absolute bottom-28 left-5 shadow-gray-500 shadow-2xl z-[100]'><EmojiPicker onEmojiClick={onEmojiClick} width={250} height={350} /> </div>}
 
 
                         {messages?.map((mess) => (
@@ -105,19 +108,12 @@ function MessageArea() {
                         ))}
 
                     </div>
-                </div>
 
-            }
-            {!selectedUser &&
 
-                <div className='lg:flex  h-screen bg-[# d5f4ec] items-center justify-center flex flex-col '>
-                    <h1 className='text-4xl text-[#30846f] font-semibold '>Welcome to <span className='text-[#30846f] text-5xl'>LITA</span></h1>
-                    <span className='text-gray-500 text-xl'>Select a user to start chatting</span>
-                </div>}
 
-            {selectedUser && <div className='w-full lg:w-[70%] h-25 fixed bottom-5 flex items-center justify-center '>
-                <img src={frontendImage} alt="" className='w-20 absolute bottom-25 right-[20%] rounded-lg shadow-gray-400 shadow-lg' />
-                <form className='w-[95%] lg:w-[70%] h-15 bg-[#408a78] shadow-gray-400 shadow-lg rounded-full flex items-center gap-5 px-5 relative' onSubmit={handleSendMessage}>
+                    <div className='w-full h-20 flex items-center justify-center bg-[#d5f4ec]'>
+                <img src={frontendImage} alt="" className='w-30 absolute bottom-25 right-[20%] rounded-lg shadow-gray-400 shadow-lg' />
+                <form className='w-[95%] h-15 bg-[#408a78] shadow-gray-400 shadow-lg rounded-full flex items-center gap-5 px-5 relative' onSubmit={handleSendMessage}>
 
                     <div onClick={() => setShowPicker(prev => !prev)}>
                         <RiEmojiStickerLine className='w-6.25 h-6.25 text-white cursor-pointer' />
@@ -132,8 +128,19 @@ function MessageArea() {
                     </button>)}
 
                 </form>
-            </div>}
+            </div>
+                </div>
 
+            }
+
+
+
+            {!selectedUser &&
+
+                <div className='lg:flex  h-screen bg-[# d5f4ec] items-center justify-center flex flex-col '>
+                    <h1 className='text-4xl text-[#30846f] font-semibold '>Welcome to <span className='text-[#30846f] text-5xl'>LITA</span></h1>
+                    <span className='text-gray-500 text-xl'>Select a user to start chatting</span>
+                </div>}
 
         </div>
     )
