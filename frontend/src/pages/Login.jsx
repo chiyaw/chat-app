@@ -43,6 +43,12 @@ function Login() {
 
 
   return (
+    <div>
+    <div className=' w-70 h-20 rounded-full overflow-hidden flex flex-col justify-center items-center shadow-gray-500 shadow-2xl bg-[#77c8b4] text-gray-00 my-5 fixed top-2.5 right-5 '>
+      <p><span className='font-bold'>Email : </span> <span>root@gmail.com</span></p>
+      <p><span className='font-bold'>Password : </span> <span>1234567</span></p>
+                    
+                </div>
     <div className='w-full h-screen bg-[#d5f4ec] flex items-center justify-center'>
       <div className='w-full max-w-125 h-150 bg-white rounded-lg  shadow-gray-400 shadow-2xl flex flex-col gap-7.5'>
         <div className='w-full h-50 bg-[#77c8b4] rounded-b-[30%] shadow-gray-400 shadow-2xl flex items-center justify-center'>
@@ -64,6 +70,7 @@ function Login() {
           </p>
         </form>
       </div>
+    </div>
     </div>
   )
 }
