@@ -1,5 +1,6 @@
 
-import { SERVER_PORT } from "./settings.js";
+import { SERVER_PORT, FRONTEND_URL } from "./settings.js";
+
 
 export const IS_AUTH={
     TOKEN_NOT_FOUND:'token is not found',
