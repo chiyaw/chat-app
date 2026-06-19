@@ -11,10 +11,17 @@ import { FRONTEND_URL } from "./settings.js";
 const port = process.env.PORT;
 
 
+// app.use(
+//   cors({
+//     origin: `${FRONTEND_URL}`,
+//     credentials: true,
+//   })
+// );
+
 app.use(
   cors({
-    origin: `${FRONTEND_URL}`,
-    credentials: true,
+    origin: true,
+    credentials: true
   })
 );
 
@@ -33,6 +40,12 @@ const start = async () => {
     app.use("/api/user", userRouter);
     app.use("/api/message", messageRouter);
 
+    app.get("/", (req, res) => {
+      res.status(200).json({
+        success: true,
+        message: "Chat backend is running 🚀",
+      });
+    });
   
     server.listen(port, (err) => {
       if (err) {
