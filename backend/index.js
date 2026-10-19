@@ -6,7 +6,7 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import messageRouter from "./routes/message.route.js";
 import { app, server } from "./socket/socket.js";
-import { FRONTEND_URL } from "./settings.js";
+import { CLIENT_URL } from "./settings.js";
 
 const port = process.env.PORT;
 
@@ -18,12 +18,26 @@ const port = process.env.PORT;
 //   })
 // );
 
+
+
+const allowedOrigins = [
+  CLIENT_URL,         
+  "http://localhost:5173",             
+  "http://127.0.0.1:5173",
+].filter(Boolean);
+
 app.use(
   cors({
-    origin: true,
-    credentials: true
+    origin: (origin, callback) => {
+      if (!origin) return callback(null, true);
+      if (allowedOrigins.includes(origin)) return callback(null, true);
+      return callback(new Error(`CORS blocked origin: ${origin}`));
+    },
+    credentials: true,
   })
 );
+
+
 
 app.use(express.json());
 app.use(cookieParser());
