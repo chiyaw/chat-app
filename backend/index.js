@@ -20,9 +20,19 @@ const port = process.env.PORT;
 
 
 
+const normalizeOrigin = (url) => {
+  if (!url) return null;
+  try {
+    const { origin } = new URL(url);
+    return origin;
+  } catch {
+    return url.replace(/\/$/, "");
+  }
+};
+
 const allowedOrigins = [
-  CLIENT_URL,         
-  "http://localhost:5173",             
+  normalizeOrigin(CLIENT_URL),
+  "http://localhost:5173",
   "http://127.0.0.1:5173",
 ].filter(Boolean);
 

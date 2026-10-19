@@ -7,15 +7,23 @@ const app = express();
 
 const server = http.createServer(app);
 
-// Defensive: if FRONTEND_URL is undefined, log a warning so you catch the problem early
+const normalizeOrigin = (url) => {
+  if (!url) return null;
+  try {
+    return new URL(url).origin;
+  } catch {
+    return url.replace(/\/$/, "");
+  }
+};
+
 const allowedOrigins = [
-  process.env.CLIENT_URL,
+  normalizeOrigin(process.env.CLIENT_URL),
   "http://localhost:5173",
   "http://127.0.0.1:5173",
 ].filter(Boolean);
 
 if (!process.env.CLIENT_URL) {
-  console.warn("⚠️ FRONTEND_URL env var is NOT set — production frontend will fail CORS!");
+  console.warn("⚠️ CLIENT_URL env var is NOT set — production frontend will fail CORS!");
 }
 
 const io = new Server(server, {
